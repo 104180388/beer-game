@@ -5,87 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
 </head>
 
 <body>
     <canvas id="gameCanvas" width="1000px" height="675px" style="border:1px solid #d3d3d3;"></canvas>
+    <script src="js/tray.js"></script>
+    <script src="js/life.js"></script>
+    <script src="js/beer.js"></script>
+    <script src="js/trash.js"></script>
     <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
+        let frames =0;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let score = 0;
+        let gameOver = false;
 
-    let score = 0;
-    let gameOver = false;
-    const heartImg = new Image();
-    heartImg.src = 'img/tray.png';
+        function gameLoop() {
+            ctx.font = "bold 20px Arial";
+            ctx.fillStyle = "gold";
 
-    const keys = {
-        left: false,
-        right: false
-    };
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillText("Score: " + score, 20, 40);
+            
+            tray.draw();
+            tray.update();
 
-    let life = {
-        amount: 3,
-        width: 30,
-        height: 30,
-        padding: 10,
-        
-        draw: function () {
-            let startX = canvas.width - (this.width + this.padding) * this.amount - 20; 
-            let y = 20;
-
-            for (let i = 0; i < this.amount; i++) {
-                let currentX = startX + i * (this.width + this.padding);
-                ctx.drawImage(heartImg, currentX, y, this.width, this.height);
-            }
-        },
-    };
-
-    const tray = {
-        x: 475,
-        y: 600,
-        width: 100,
-        height: 50,
-        speed: 7,
-        update: function () {
-            if (keys.left) {
-                this.x -= this.speed;
-            }
-            if (keys.right) {
-                this.x += this.speed;
-            }
-
-            if (this.x < 0) this.x = 0;
-            if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
-        },
-        draw: function () {
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(this.x, this.y, this.width, this.height);
+            life.draw();
+            handleBottles();
+            handleTrashes();
+            
+            requestAnimationFrame(gameLoop);
         }
-    };
+        gameLoop();
+    </script>
 
-    function gameLoop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        tray.update();
-        tray.draw();
-
-        life.draw();
-        
-        requestAnimationFrame(gameLoop);
-    }
-
-    window.addEventListener('keydown', function(evt) {
-        if (evt.key === 'a' || evt.key === 'A') keys.left = true;
-        if (evt.key === 'd' || evt.key === 'D') keys.right = true;
-    });
-
-    window.addEventListener('keyup', function(evt) {
-        if (evt.key === 'a' || evt.key === 'A') keys.left = false;
-        if (evt.key === 'd' || evt.key === 'D') keys.right = false;
-    });
-
-    gameLoop();
-</script>
 </body>
 
 
