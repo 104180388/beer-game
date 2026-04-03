@@ -1,7 +1,10 @@
+const trayImg = new Image();
+trayImg.src = 'img/tray.png';
+
 const tray = {
     x: 475,
-    y: 600,
-    width: 100,
+    y: 630,
+    width: 190,
     height: 50,
     speed: 7,
     update: function () {
@@ -16,8 +19,7 @@ const tray = {
         if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
     },
     draw: function () {
-        ctx.fillStyle = 'blue';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(trayImg, this.x, this.y, this.width, this.height);
     }
 };
 
