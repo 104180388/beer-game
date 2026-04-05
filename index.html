@@ -4,23 +4,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Catch The Beer</title>
 
     <style>
+        #gameContainer {
+            position: relative;
+            width: 1000px;
+            height: 675px;
+        }
+
         #gameCanvas {
             border: 1px solid #d3d3d3;
             background-image: url('img/bar.gif'); 
             background-size: cover; 
             background-position: center;
             background-repeat: no-repeat;
-            border:1px solid #d3d3d3;
         }
+
+        .overlayScreen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75); /* Nền đen mờ */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        #startButton {
+            padding: 15px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background-color: #ff9800;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #startButton:hover {
+            background-color: #e68a00;
+            transform: scale(1.05);
+        }
+
+        #difficultyScreen {
+            display: none;
+            gap: 15px;
+        }
+
+        #difficultyScreen h2 {
+            color: white;
+            font-family: Arial, sans-serif;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .diffBtn {
+            padding: 12px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 200px;
+            transition: 0.2s;
+        }
+
+        .diffBtn:hover { transform: scale(1.05); }
+        
+        #btnEasy { background-color: #4CAF50; }
+        #btnEasy:hover { background-color: #45a049; }
+        
+        #btnNormal { background-color: #2196F3; }
+        #btnNormal:hover { background-color: #1976D2; }
+        
+        #btnHard { background-color: #f44336; }
+        #btnHard:hover { background-color: #d32f2f; }
     </style>
 
 </head>
 
 <body>
-    <canvas id="gameCanvas" width="1000px" height="675px"></canvas>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1000px" height="675px"></canvas>
+        
+        <div id="startScreen" class="overlayScreen">
+            <button id="startButton">BẮT ĐẦU GAME</button>
+        </div>
+
+        <div id="difficultyScreen" class="overlayScreen">
+            <h2>Chọn Độ Khó</h2>
+            <button id="btnEasy" class="diffBtn">Dễ</button>
+            <button id="btnNormal" class="diffBtn">Trung Bình</button>
+            <button id="btnHard" class="diffBtn">Khó</button>
+        </div>
+    </div>
+
     <script src="js/tray.js"></script>
     <script src="js/life.js"></script>
     <script src="js/beer.js"></script>
@@ -45,19 +131,20 @@
                 ctx.fillText("Nhấn F5 để chơi lại", canvas.width / 2, canvas.height / 2 + 50);
                 return;
             }
-            if(score==100){
-                hard()
+            
+            // Logic tăng độ khó theo điểm số (giữ nguyên của bạn)
+            if(score == 100){
+                hard();
             }
-            else if(score==200){
-                nightmare()
+            else if(score == 200){
+                nightmare();
             }
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             ctx.font = "bold 20px Arial";
             ctx.fillStyle = "gold";
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.textAlign = "left";
             ctx.fillText("Score: " + score, 20, 40);
 
             tray.draw();
@@ -70,10 +157,34 @@
 
             requestAnimationFrame(gameLoop);
         }
-        gameLoop();
+
+        const startScreen = document.getElementById('startScreen');
+        const difficultyScreen = document.getElementById('difficultyScreen');
+
+        document.getElementById('startButton').addEventListener('click', function() {
+            startScreen.style.display = 'none';
+            difficultyScreen.style.display = 'flex';
+        });
+
+        function startGameWithDifficulty(level) {
+            difficultyScreen.style.display = 'none';
+            
+            if (level === 'easy') {
+                easy();
+            } else if (level === 'normal') {
+                hard();
+            } else if (level === 'hard') {
+                nightmare();
+            }
+
+            gameLoop();
+        }
+
+        document.getElementById('btnEasy').addEventListener('click', () => startGameWithDifficulty('easy'));
+        document.getElementById('btnNormal').addEventListener('click', () => startGameWithDifficulty('normal'));
+        document.getElementById('btnHard').addEventListener('click', () => startGameWithDifficulty('hard'));
+
     </script>
 
 </body>
-
-
 </html>

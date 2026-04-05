@@ -14,3 +14,7 @@ function nightmare() {
     trashSpeed = 4
     maxTrashes = 3
 }
+
+function scoreCal(){
+    
+}
