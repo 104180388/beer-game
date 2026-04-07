@@ -1,9 +1,8 @@
 const trashImg = new Image();
-trashImg.src = 'img/trash.png'; 
+trashImg.src = 'img/trash.png';
 
 let trashes = [];
 let maxTrashes = 2;
-let counter = 0;
 let trashSpeed = 1
 
 function spawnTrash() {
@@ -18,7 +17,7 @@ function spawnTrash() {
 }
 
 function handleTrashes() {
-    if (frames % 200 === 0 && trashes.length < maxTrashes) { 
+    if (trashes.length < maxTrashes) { 
         spawnTrash();
     }
 
@@ -28,23 +27,22 @@ function handleTrashes() {
         ctx.drawImage(trashImg, t.x, t.y, t.w, t.h);
 
         if (
-            t.x < tray.x + tray.width &&
-            t.x + t.w > tray.x &&
-            t.y < tray.y + tray.height +1 &&
-            t.y + t.h > tray.y
+            t.x  < tray.x + tray.width-30 &&
+            t.x + t.w > tray.x +30 &&
+            t.y < tray.y + tray.height -30 &&
+            t.y + t.h > tray.y+30
         ) {
             life.lossHeart(); 
             trashes.splice(i, 1);
-            counter+=1;
-            continue; 
+            continue;
         }
 
         if (t.y > canvas.height) {
             trashes.splice(i, 1);
         }
 
-        if(counter===3){
-            gameOver = true;
-        }
+        if (life.amount <= 0) {
+        gameOver = true;
+    }
     }
 }

@@ -26,8 +26,6 @@ let life = {
     },
 
     lossHeart: function() {
-        if (this.amount > 0) {
-            this.amount--; 
-        }
+        this.amount--; 
     }
 };

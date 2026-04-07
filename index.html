@@ -27,7 +27,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.75); /* Nền đen mờ */
+            background-color: rgba(0, 0, 0, 0.75);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -94,16 +94,16 @@
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas" width="1000px" height="675px"></canvas>
-        
+
         <div id="startScreen" class="overlayScreen">
-            <button id="startButton">BẮT ĐẦU GAME</button>
+            <button type="button" id="startButton">BẮT ĐẦU GAME</button>
         </div>
 
         <div id="difficultyScreen" class="overlayScreen">
             <h2>Chọn Độ Khó</h2>
-            <button id="btnEasy" class="diffBtn">Dễ</button>
-            <button id="btnNormal" class="diffBtn">Trung Bình</button>
-            <button id="btnHard" class="diffBtn">Khó</button>
+            <button type="button" id="btnEasy" class="diffBtn">Dễ</button>
+            <button type="button" id="btnNormal" class="diffBtn">Trung Bình</button>
+            <button type="button" id="btnHard" class="diffBtn">Khó</button>
         </div>
     </div>
 
@@ -112,79 +112,7 @@
     <script src="js/beer.js"></script>
     <script src="js/trash.js"></script>
     <script src="js/difficult.js"></script>
-    <script>
-        let frames = 0;
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        let score = 0;
-        let gameOver = false;
-
-        function gameLoop() {
-            if (gameOver === true) {
-                ctx.fillStyle = "red";
-                ctx.font = "bold 60px Arial";
-                ctx.textAlign = "center";
-                ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
-
-                ctx.fillStyle = "black";
-                ctx.font = "20px Arial";
-                ctx.fillText("Nhấn F5 để chơi lại", canvas.width / 2, canvas.height / 2 + 50);
-                return;
-            }
-            
-            // Logic tăng độ khó theo điểm số (giữ nguyên của bạn)
-            if(score == 100){
-                hard();
-            }
-            else if(score == 200){
-                nightmare();
-            }
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            ctx.font = "bold 20px Arial";
-            ctx.fillStyle = "gold";
-            ctx.textAlign = "left";
-            ctx.fillText("Score: " + score, 20, 40);
-
-            tray.draw();
-            tray.update();
-
-            life.draw();
-            
-            handleBeers();
-            handleTrashes();
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        const startScreen = document.getElementById('startScreen');
-        const difficultyScreen = document.getElementById('difficultyScreen');
-
-        document.getElementById('startButton').addEventListener('click', function() {
-            startScreen.style.display = 'none';
-            difficultyScreen.style.display = 'flex';
-        });
-
-        function startGameWithDifficulty(level) {
-            difficultyScreen.style.display = 'none';
-            
-            if (level === 'easy') {
-                easy();
-            } else if (level === 'normal') {
-                hard();
-            } else if (level === 'hard') {
-                nightmare();
-            }
-
-            gameLoop();
-        }
-
-        document.getElementById('btnEasy').addEventListener('click', () => startGameWithDifficulty('easy'));
-        document.getElementById('btnNormal').addEventListener('click', () => startGameWithDifficulty('normal'));
-        document.getElementById('btnHard').addEventListener('click', () => startGameWithDifficulty('hard'));
-
-    </script>
+    <script src="js/logic.js"></script>
 
 </body>
 </html>

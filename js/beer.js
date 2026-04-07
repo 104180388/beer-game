@@ -2,7 +2,7 @@ const beerImg = new Image();
 beerImg.src = 'img/beer.png';
 
 let beers = [];
-let spawnTimer = 0;
+let maxBeers = 1;
 let beerSpeed = 2
 
 function spawnBeer() {
@@ -16,13 +16,8 @@ function spawnBeer() {
 }
 
 function handleBeers() {
-    if (beers.length === 0) {
-        spawnTimer++; 
-        
-        if (spawnTimer >= 30) {
-            spawnBeer();
-            spawnTimer = 0;
-        }
+    if (beers.length < maxBeers) { 
+        spawnBeer();
     }
 
     for (let i = beers.length - 1; i >= 0; i--) {
@@ -36,9 +31,10 @@ function handleBeers() {
             b.y < tray.y + tray.height &&
             b.y + b.h > tray.y
         ) {
-            score += 10; 
-            beers.splice(i, 1); 
-            continue; 
+            score += 10;
+            beers.splice(i, 1);
+            scoreCal()
+            continue;
         }
         if (b.y > canvas.height) {
             beers.splice(i, 1);

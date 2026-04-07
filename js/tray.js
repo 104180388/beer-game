@@ -1,12 +1,16 @@
 const trayImg = new Image();
 trayImg.src = 'img/tray.png';
+const keys = {
+    left: false,
+    right: false
+};
 
 const tray = {
     x: 475,
     y: 630,
     width: 190,
     height: 50,
-    speed: 7,
+    speed: 6,
     update: function () {
         if (keys.left) {
             this.x -= this.speed;
@@ -15,17 +19,16 @@ const tray = {
             this.x += this.speed;
         }
 
-        if (this.x < 0) this.x = 0;
-        if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+        if (this.x < 0) {
+            this.x = 0
+        };
+        if (this.x + this.width > canvas.width) {
+            this.x = canvas.width - this.width
+        };
     },
     draw: function () {
         ctx.drawImage(trayImg, this.x, this.y, this.width, this.height);
     }
-};
-
-const keys = {
-    left: false,
-    right: false
 };
 
 window.addEventListener('keydown', function (evt) {
